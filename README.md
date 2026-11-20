@@ -15,6 +15,13 @@ The game autosaves to the browser's localStorage every in-game month. `?new=1234
 The game is a static site: `web/index.html`, `web/src/` and `web/vendor/`. Any web server can host it.
 
 - **GitHub Pages (automatic):** every push to `main` runs `.github/workflows/pages.yml`, which publishes the game to https://alastairtech.github.io/boats/.
+- **A local Debian or Ubuntu machine:** on that machine, clone the repo and run the installer. It installs nginx if needed, copies the game to `/var/www/boats` and sets up an nginx site:
+  ```sh
+  git clone https://github.com/alastairtech/boats.git && cd boats
+  sudo deploy/install-debian.sh              # serves on port 80
+  sudo PORT=8080 deploy/install-debian.sh    # or pick another port
+  ```
+  To update, run `git pull && sudo deploy/install-debian.sh` again. On port 80 it switches off nginx's stock welcome page. To remove it: `sudo rm /etc/nginx/sites-enabled/boats && sudo systemctl reload nginx`.
 - **Any server over SSH:** `deploy/deploy.sh user@host:/var/www/boats` copies the files with rsync into an existing web root (nginx, Apache, Caddy…). `deploy/nginx.conf` is a suitable nginx server block (set `root` to that folder).
 
 ## The game
